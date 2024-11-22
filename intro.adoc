@@ -1,0 +1,25 @@
+= Google Cloud Platform (GCP)
+:revealjs_theme: beige
+
+== Présentation de GCP :
+
+* link:./module-introductif.html[Histoire et services principaux]
+
+== Module 1 : Infrastructure de base 
+
+* link:./module-1-creation.html[Création et gestion d’un projet GCP]
+
+== Module 2 : Stockage dans GCP 
+
+=== 1. Google Cloud Storage
+
+* link:./module-2-stockage.html[Types de stockage : Standard, Nearline, Coldline, Archive]
+
+=== 2. Bases de données
+
+* Démonstration avec une base de données NoSQL 
+
+== Module 3 : Sécurité et gestion des coûts 
+
+* link:./module-3-iam.html[Gestion des accès et permissions]
+* link:./module-3-cout.html[Gestion des coûts]

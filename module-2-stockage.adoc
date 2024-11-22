@@ -1,0 +1,320 @@
+= Stockage Google Cloud 
+:revealjs_theme: beige
+
+== 1. Types de stockage : Standard, Nearline, Coldline, Archive
+
+Les types de stockage diffèrent par leur coût et leurs performances, et sont adaptés à des cas d'utilisation spécifiques.
+
+== 1. Standard
+
+=== Caractéristiques :
+
+Haute performance.
+
+=== ...
+
+Faible latence.
+
+=== ...
+
+Conçu pour les données fréquemment consultées.
+
+=== Cas d’utilisation :
+
+
+Hébergement de sites web.
+
+=== ...
+
+Streaming vidéo.
+
+=== ...
+
+Données opérationnelles actives.
+
+
+== 2. Nearline
+
+=== Caractéristiques :
+
+Conçu pour les données rarement consultées, au moins une fois par mois.
+
+=== ...
+
+Moins cher que le stockage Standard.
+
+=== Cas d’utilisation :
+
+* Sauvegardes.
+* Données d'analyse non actives.
+
+== 3. Coldline
+
+=== Caractéristiques :
+
+Idéal pour les données rarement consultées, moins d’une fois par trimestre.
+
+=== ...
+
+Coût d'accès plus élevé que le stockage Standard ou Nearline.
+
+
+=== Cas d’utilisation :
+
+* Archivage.
+* Sauvegardes de longue durée.
+
+== 4. Archive
+
+=== Caractéristiques :
+
+Conçu pour les données très rarement consultées, moins d’une fois par an.
+
+=== ...
+
+Très faible coût de stockage.
+
+== Cas d’utilisation :
+
+* Archivage réglementaire.
+* Conservation de données à long terme.
+
+== 2. Création d’un bucket
+
+Un bucket est un conteneur qui stocke vos objets dans Google Cloud Storage.
+
+== A. Via la console Google Cloud
+
+* Accédez à la Google Cloud Console : https://console.cloud.google.com/storage.
+
+
+=== ...
+
+* Cliquez sur "Créer un bucket".
+
+=== Configurez les paramètres :
+
+* Nom du bucket : Un nom unique à l'échelle mondiale (ex. : mon-bucket-de-demo).
+
+=== ...
+
+* Emplacement :
+
+=== ...
+
+* Multi-régional : Pour une haute disponibilité (ex. us ou eu).
+
+=== ...
+
+*  Régional : Pour minimiser les coûts (ex. europe-west1).
+
+== Classe de stockage par défaut :
+
+Choisissez parmi Standard, Nearline, Coldline, ou Archive.
+
+=== Contrôle des accès :
+
+* Uniforme : Accès défini au niveau du bucket.
+* Granulaire : Accès défini au niveau des objets.
+
+=== ...
+
+Cliquez sur "Créer".
+
+== B. Via la CLI gcloud
+
+Commande pour créer un bucket :
+
+[source, bash]
+----
+gcloud storage buckets create gs://<nom-bucket> \
+    --location=<emplacement> \
+    --default-storage-class=<type-stockage>
+----
+
+
+== Exemple :
+
+
+[source, bash]
+----
+gcloud storage buckets create gs://mon-bucket-de-boris \
+    --location=europe-west1 \
+    --default-storage-class=STANDARD
+----
+
+
+== 3. Charger des fichiers dans un bucket
+
+=== A. Via la console Google Cloud
+
+* Allez dans Cloud Storage > Buckets.
+* Sélectionnez le bucket que vous avez créé.
+
+=== ...
+
+* Cliquez sur "Téléverser des fichiers" ou "Téléverser des dossiers".
+
+=== ...
+
+* Parcourez vos fichiers locaux et sélectionnez ceux à téléverser.
+
+=== ...
+
+Une fois le téléversement terminé, les fichiers seront listés dans le bucket.
+
+
+=== B. Via la CLI gcloud
+
+=== Commande pour téléverser un fichier :
+[source, bash]
+----
+gcloud storage cp <chemin-du-fichier-local> gs://<nom-bucket>/
+----
+
+
+=== Exemple :
+
+[source, bash]
+----
+gcloud storage cp fichier.txt gs://mon-bucket-de-demo/
+----
+
+
+=== Commande pour téléverser un dossier entier :
+
+[source, bash]
+----
+gcloud storage cp -r <chemin-du-dossier-local> gs://<nom-bucket>/
+----
+
+
+=== Exemple :
+
+[source, bash]
+----
+gcloud storage cp -r mon-dossier/ gs://mon-bucket-de-demo/
+----
+
+
+== C. Via l'API REST
+
+
+Faites une requête POST avec le fichier :
+
+[source, bash]
+----
+curl -X POST --data-binary @fichier.txt \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: text/plain" \
+    "https://storage.googleapis.com/upload/storage/v1/b/<nom-bucket>/o?uploadType=media&name=fichier.txt"
+----
+
+
+== 4. Gérer les fichiers dans un bucket
+
+
+=== Lister les fichiers
+
+=== Via la console : Tous les objets sont visibles dans le bucket.
+
+=== Via la CLI :
+[source, bash]
+----
+gcloud storage ls gs://<nom-bucket>/
+----
+
+
+== Télécharger un fichier
+
+=== Via la console :
+
+Cliquez sur le fichier dans le bucket, puis sur "Télécharger".
+
+=== Via la CLI :
+
+[source, bash]
+----
+gcloud storage cp gs://<nom-bucket>/<nom-fichier> <chemin-local>
+----
+
+=== Exemple :
+
+[source, bash]
+----
+gcloud storage cp gs://mon-bucket-de-demo/fichier.txt ~/Téléchargements/
+----
+
+
+=== Supprimer un fichier
+
+=== Via la console :
+
+Cochez les fichiers à supprimer, puis cliquez sur "Supprimer".
+
+=== Via la CLI :
+
+[source, bash]
+----
+gcloud storage rm gs://<nom-bucket>/<nom-fichier>
+----
+
+== Exemple :
+
+[source, bash]
+----
+gcloud storage rm gs://mon-bucket-de-demo/fichier.txt
+----
+
+
+== Supprimer un bucket
+
+=== Via la console :
+
+Supprimez d'abord tous les fichiers dans le bucket.
+Cliquez sur le bucket, puis sur "Supprimer".
+
+=== Via la CLI :
+
+[source, bash]
+----
+gcloud storage buckets delete gs://<nom-bucket>
+----
+
+== 5. Politiques de gestion et bonnes pratiques
+
+* Politiques de cycle de vie des objets
+
+
+=== ...
+
+* Automatiser la transition entre types de stockage ou supprimer des fichiers :
+
+=== ...
+
+Dans la console, accédez à Cloud Storage > Buckets > Gestion du cycle de vie.
+
+=== ...
+
+Créez une règle (par exemple, transférer les fichiers non utilisés pendant 30 jours vers Nearline).
+
+
+== Contrôle d'accès
+
+Configurez les permissions via IAM ou ACLs (Access Control Lists) :
+
+* Par utilisateur : Accès en lecture/écriture.
+
+* Par groupe : Règles de partage pour les équipes.
+
+
+== Monitoring et suivi des coûts
+
+Utilisez Cloud Monitoring pour surveiller l'utilisation du stockage.
+Configurez des alertes budgétaires via Cloud Billing.
+
+
+
+
+
+

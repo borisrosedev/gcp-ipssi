@@ -1,0 +1,282 @@
+= Création et Gestion d’un Projet GCP
+:revealjs_theme: beige
+
+== Introduction
+
+Google Cloud Platform (GCP) utilise une structure basée sur des projets pour organiser les ressources et les services. 
+
+=== ...
+
+Un projet est l’unité de base dans GCP, regroupant:
+[%step]
+* les ressources, 
+* la facturation, 
+* les autorisations.
+
+
+== 1. Qu'est-ce qu'un projet dans GCP ?
+
+Un projet est un **conteneur** qui regroupe :
+
+* Ressources : Machines virtuelles, bases de données, buckets, etc.
+
+=== ...
+
+* Services : Compute Engine, BigQuery, Cloud Functions, etc.
+
+=== ...
+
+Paramètres de facturation : Associé à un compte de facturation unique.
+
+=== ...
+
+Contrôle d'accès : Géré via les rôles IAM.
+
+
+== Chaque projet a :
+
+* Un nom (modifiable).
+* Un ID unique (non modifiable une fois défini).
+* Un numéro de projet généré automatiquement.
+
+== 2. Étapes pour créer un projet GCP
+
+=== A. Prérequis
+
+* Compte Google : Connectez-vous avec un compte Gmail ou G Suite.
+* Facturation activée : Assurez-vous d'avoir un compte de facturation actif 
+
+=== B. Création d'un projet
+
+
+* Accéder à la console GCP :
+
+Rendez-vous sur https://console.cloud.google.com/.
+
+=== ...
+
+* Créer un projet :
+
+=== ...
+
+* Dans la barre supérieure, cliquez sur "Sélectionner un projet" > "Nouveau projet".
+
+=== ...
+
+* Remplissez les champs :
+
+=== ...
+
+* Nom du projet : Donnez un nom descriptif.
+
+=== ...
+
+* ID du projet : GCP propose un ID unique que vous pouvez personnaliser avant de valider.
+
+=== ...
+
+* Organisation : (Optionnel) Sélectionnez une organisation si vous en avez une.
+
+=== ...
+
+* Emplacement du dossier : (Optionnel) Si vous utilisez des dossiers pour organiser les projets.
+
+=== ...
+
+* Cliquez sur "Créer".
+
+=== ...
+
+* Associer un compte de facturation :
+
+=== ...
+
+Une fois le projet créé, associez-le à un compte de facturation :
+
+=== ...
+
+Allez dans Facturation > Sélectionnez le projet > Associez un compte de facturation.
+
+=== ...
+
+Activer les APIs nécessaires :
+
+=== ...
+
+Allez dans Bibliothèque d’APIs et activez les APIs nécessaires (par exemple, Compute Engine API pour créer des machines virtuelles).
+
+
+== 3. Gérer les paramètres d’un projet
+
+=== A. Vue d’ensemble du projet
+
+Dans la console, sélectionnez votre projet et accédez à Vue d’ensemble.
+
+
+=== Vous y trouverez :
+
+[%step]
+* Nom : Peut être modifié.
+* ID et numéro : Ne peuvent pas être modifiés.
+* Compte de facturation associé.
+
+=== B. Activer/Désactiver les services
+
+==== Activer un service :
+
+* Allez dans Bibliothèque d’APIs.
+
+=== ...
+
+* Recherchez le service ou l’API à activer (par exemple, BigQuery, Cloud Storage).
+
+=== ...
+
+* Cliquez sur "Activer".
+
+=== ...
+
+
+== Désactiver un service :
+
+Accédez à APIs & Services > Tableau de bord.
+
+=== ...
+
+Sélectionnez l’API et cliquez sur "Désactiver".
+
+== C. Ajouter des membres et configurer les rôles IAM
+
+
+Allez dans IAM & Administration > IAM.
+
+=== ...
+
+Cliquez sur "Ajouter".
+
+=== ...
+
+Entrez l’adresse email du membre (utilisateur ou groupe).
+
+=== ...
+
+Assignez un rôle (ex. : Éditeur, Lecteur, ou un rôle personnalisé).
+Cliquez sur "Enregistrer".
+
+
+== D. Configurer les quotas
+
+Les projets GCP ont des quotas (par exemple, nombre d'instances de VM, requêtes API, etc.).
+
+=== ...
+
+Allez dans IAM & Administration > Quotas pour voir et demander des augmentations.
+
+== E. Suivi des coûts et des dépenses
+
+=== Activez Cloud Billing Reports :
+
+Suivez les coûts en temps réel.
+
+
+=== Configurez des budgets et alertes :
+
+Allez dans Facturation > Budgets et alertes pour recevoir des notifications lorsque vos dépenses atteignent un seuil.
+
+== 4. Bonne gestion des projets
+
+=== A. Organisation hiérarchique des projets
+
+=== Dossiers : 
+
+Utilisez des dossiers pour regrouper des projets liés.
+
+=== Organisations : 
+
+Si vous gérez plusieurs équipes ou clients, regroupez-les sous une organisation. 
+
+== B. Sécurité et gestion des accès
+
+Utilisez IAM pour définir des rôles spécifiques :
+
+=== Propriétaire : 
+
+Accès complet au projet.
+
+=== Éditeur : 
+
+Peut modifier les ressources.
+
+=== Lecteur : 
+
+Accès en lecture seule.
+
+=== Principes de moindre privilège :
+
+Donnez uniquement les autorisations nécessaires. 
+
+
+== C. Archivage et suppression des projets
+
+=== Archivage :
+
+Désactivez les services non nécessaires pour minimiser les coûts.
+
+=== Suppression :
+
+Allez dans IAM & Administration > Paramètres > Supprimer le projet.
+Attention, cette action est irréversible.
+
+== 5. Bonnes pratiques pour gérer les projets
+
+Nommer les projets et ressources clairement (ex. : dev-backend-app).
+
+=== Activer le suivi des logs :
+
+Utilisez Cloud Logging pour surveiller les activités.
+
+=== Séparer les environnements :
+
+Créez des projets distincts pour le développement, les tests et la production.
+
+=== Optimiser les coûts :
+
+Supprimez les ressources inutilisées ou planifiez leur arrêt.
+
+== 6. Automatisation avec gcloud CLI
+
+== Créer un projet avec gcloud CLI
+
+
+* Installez le SDK Google Cloud :
+
+* Authentifiez-vous :
+
+[source, bash]
+----
+gcloud auth login
+----
+
+=== Créez un projet :
+[source, bash]
+----
+gcloud projects create [PROJECT_ID] --name="[PROJECT_NAME]"
+----
+
+Associez un compte de facturation :
+[source, bash]
+----
+gcloud beta billing projects link [PROJECT_ID] --billing-account=[BILLING_ACCOUNT_ID]
+----
+
+Lister vos projets
+[source, bash]
+----
+gcloud projects list
+----
+
+
+
+
+
+

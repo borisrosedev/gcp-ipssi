@@ -1,0 +1,323 @@
+= Google Compute Engine (GCE)
+:revealjs_theme: beige
+
+== Introduction
+
+Google Compute Engine (GCE) est le service d'infrastructure en tant que service (IaaS) de Google Cloud Platform (GCP). 
+
+=== ...
+
+Il vous permet de créer et de gérer des machines virtuelles (VM) dans le Cloud pour exécuter vos applications et services.
+
+== 1. Qu’est-ce que Compute Engine ?
+
+Google Compute Engine fournit une infrastructure virtuelle avec des machines virtuelles hautement personnalisables. 
+
+=== ...
+
+Vous pouvez choisir le matériel virtuel, le système d'exploitation, et ...
+
+=== ...
+
+configurer des réseaux pour répondre aux besoins de vos applications.
+
+== 2. Caractéristiques principales
+
+=== A. Machines virtuelles (VMs) personnalisables
+
+=== Types de machines :
+
+[%step]
+* Généralistes : Pour les charges de travail courantes (e2, n2).
+* Optimisées pour le calcul : Charges intensives en CPU (c2).
+
+=== ...
+
+[%step]
+* Optimisées pour la mémoire : Bases de données, caches en mémoire (m2, m1).
+* Optimisées pour le stockage : Charges lourdes en E/S (n2d-highmem).
+
+
+
+== Personnalisation :
+
+Vous pouvez personnaliser précisément le nombre de CPU virtuels (vCPU) et la quantité de mémoire.
+
+
+=== ...
+
+Créez des machines avec des tailles non standard pour faire des économies.
+
+
+== B. Images système
+
+=== Images préconfigurées :
+
+Systèmes d'exploitation populaires (Linux : Ubuntu, CentOS, Debian ; Windows Server).
+
+=== Images personnalisées :
+
+Il est possible mais je ne l'ai jamais fait d'importer vos propres systèmes d’exploitation. 
+
+=== Images premium :
+
+Systèmes d’exploitation commerciaux avec licences incluses (ex. : Red Hat Enterprise Linux, Windows Server).
+
+== C. Types de stockage
+
+=== Disques persistants (Persistent Disks) :
+
+[%step]
+* Standard HDD : Coût réduit, bon pour les archives.
+
+=== ...
+
+* SSD : Performance élevée pour les bases de données et les applications intensives.
+
+=== ...
+
+* Local SSD :
+Ultra-rapide mais non persistant après l’arrêt de la VM.
+
+
+== Filestore :
+
+Partage réseau via NFS.
+
+== D. Réseau avancée
+
+=== VPC (Virtual Private Cloud) :
+
+* Créez un réseau isolé pour vos VM.
+
+=== ...
+
+* Règles de pare-feu :
+Configurez les ports ouverts pour les services (SSH, HTTP, etc.).
+
+=== ...
+
+* Équilibrage de charge :
+Répartissez le trafic entre plusieurs VM.
+
+=== ...
+
+* Adresses IP :
+Utilisez des IP statiques ou dynamiques.
+
+=== E. Évolutivité
+
+* Groupes d'instances managées (MIG) :
+
+* Gérez automatiquement un groupe de VM identiques.
+
+* Échelle automatique (ajouter ou supprimer des VM selon la charge).
+
+=== F. Haute disponibilité
+
+Options de redondance et basculement automatique :
+
+=== ...
+
+Redémarrage automatique des VM.
+
+=== ...
+
+Répartition entre zones pour éviter les pannes.
+
+== 3. Cas d’utilisation
+
+=== Hébergement d’applications web :
+
+Déployer des serveurs web comme Apache ou Nginx.
+
+=== Bases de données :
+
+Héberger des bases de données comme MySQL ou PostgreSQL.
+
+=== Analyse de données :
+
+Exécuter des pipelines de traitement.
+Développement et tests :
+Créer des environnements isolés.
+
+== 4. Étapes pour créer une machine virtuelle avec Compute Engine
+
+=== A. Via la console GCP
+
+* Accédez à Compute Engine :
+
+* Allez dans Console GCP > Compute Engine > VM Instances.
+
+=== Créer une instance :
+
+* Cliquez sur "Créer une instance".
+
+=== Configurer l'instance :
+
+* Nom : Donnez un nom descriptif à votre VM.
+
+=== ...
+
+* Zone : Choisissez une région géographique (ex. : europe-west1).
+
+=== ...
+
+* Type de machine : Sélectionnez une configuration prédéfinie ou personnalisez.
+
+=== ...
+
+* Image système : Choisissez un OS préinstallé ou téléchargez votre propre image.
+
+=== ...
+
+* Disque : Sélectionnez la taille et le type de stockage.
+
+=== ...
+
+* Réseau : Configurez les règles de pare-feu (SSH, HTTP, HTTPS).
+
+=== Créer :
+
+Cliquez sur "Créer". La VM sera déployée en quelques secondes.
+
+== B. Via la CLI (gcloud)
+
+Commande pour créer une VM :
+
+[source, bash]
+---
+gcloud compute instances create <nom-instance> \
+    --zone=<zone> \
+    --machine-type=<type-machine> \
+    --image=<nom-image> \
+    --boot-disk-size=<taille-disque> \
+    --tags=<tags>
+---
+
+=== Exemple :
+[source, bash]
+----
+gcloud compute instances create demo-vm \
+    --zone=europe-west1-b \
+    --machine-type=n1-standard-1 \
+    --image-family=debian-11 \
+    --image-project=debian-cloud \
+    --boot-disk-size=20GB \
+    --tags=http-server,https-server
+----
+
+
+== C. Via Terraform
+
+Fichier de configuration Terraform :
+
+[source, bash]
+----
+resource "google_compute_instance" "vm_instance" {
+    name         = "example-instance"
+    machine_type = "n1-standard-1"
+    zone         = "europe-west1-b"
+
+    boot_disk {
+        initialize_params {
+            image = "debian-cloud/debian-11"
+        }
+    }
+
+    network_interface {
+        network = "default"
+        access_config {
+        }
+    }
+}
+
+----
+
+
+== Appliquer la configuration :
+
+[source, bash]
+----
+terraform init
+terraform apply
+----
+
+== 5. Gestion des machines virtuelles
+
+=== A. Connexion aux VM
+
+=== SSH via la console :
+
+Cliquez sur "Se connecter" pour ouvrir un terminal directement depuis la console GCP.
+
+=== SSH depuis un client local :
+
+[source, bash]
+----
+gcloud compute ssh <nom-instance> --zone <zone>
+----
+
+== B. Gestion des disques
+
+=== Ajoutez ou modifiez des disques persistants :
+
+Allez dans Compute Engine > Disques > Créer un disque.
+Attachez-le à une VM via la console ou la CLI.
+
+=== C. Groupes d’instances managées
+
+=== Créez un groupe d'instances managées :
+
+* Configurez une instance modèle.
+
+* Définissez des règles de scaling automatique (basées sur la charge CPU ou d'autres métriques).
+
+
+=== Équilibrage de charge :
+
+Ajoutez un Load Balancer pour distribuer le trafic.
+
+== 6. Facturation et optimisation des coûts
+
+=== A. Modèles de facturation
+
+=== Pay-as-you-go : 
+
+Payez uniquement pour les ressources utilisées.
+
+=== Réductions :
+
+Usage soutenu : Réduction automatique pour les VM utilisées de manière prolongée.
+
+=== Réservations : 
+
+Réduction pour les VM réservées sur un an ou plus.
+
+== B. Stratégies de réduction des coûts
+
+Utilisez des VM préemptibles (moins chères, mais interrompues après 24h).
+
+Surveillez l’utilisation via Cloud Billing Reports.
+
+Éteignez les VM inutilisées.
+
+== 7. Sécurité et monitoring
+
+=== A. Sécurité
+
+Configurez les IAM pour limiter l'accès aux VM.
+
+Utilisez des clés SSH ou Google OAuth pour l’authentification.
+
+Activez Google Shielded VM pour une protection accrue.
+
+=== B. Monitoring
+
+=== Cloud Monitoring :
+
+Surveillez les performances des VM (CPU, RAM, trafic réseau).
+
+=== Logs :
+
+Activez Cloud Logging pour centraliser les logs des VM.

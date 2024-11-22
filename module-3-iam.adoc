@@ -1,0 +1,280 @@
+= Gestion des accès et permissions sur Google Cloud Platform (GCP)
+:revealjs_theme: beige
+
+== Introduction
+
+La gestion des accès et permissions sur GCP repose principalement sur Identity and Access Management (IAM), ...
+
+=== ...
+
+un service centralisé qui permet de contrôler l’accès aux ressources en fonction des rôles et des permissions.
+
+== 1. Principes fondamentaux de la gestion des accès sur GCP
+
+=== A. Modèle basé sur les rôles
+
+GCP utilise un modèle de permissions basé sur des rôles assignés à des principaux (utilisateurs, groupes ou comptes de service).
+
+=== ...
+
+
+Un rôle regroupe un ensemble de permissions spécifiques qui définissent ce qu'un principal peut faire sur une ressource.
+
+
+== B. Principaux (Principals)
+
+Les principaux sont les entités auxquelles les rôles sont assignés :
+
+=== Utilisateurs individuels : 
+
+Comptes Google (ex. : utilisateur@gmail.com).
+
+=== Groupes : 
+
+Groupes Google pour regrouper plusieurs utilisateurs.
+
+=== Comptes de service : 
+
+Entités non humaines utilisées par les applications pour accéder aux ressources.
+
+=== Domaines et organisations : 
+
+Autorisations au niveau d'un domaine (G Suite/Workspace).
+
+== C. Hiérarchie des ressources
+
+Les rôles et permissions sur GCP suivent une hiérarchie :
+
+* Organisation (niveau supérieur).
+* Dossiers (groupent des projets).
+
+=== ...
+
+* Projets (conteneurs pour les ressources).
+* Ressources spécifiques (VMs, buckets, etc.).
+
+=== ...
+
+Les permissions appliquées à un niveau supérieur (par exemple, un projet) ...
+
+=== ...
+
+s'appliquent par héritage aux niveaux inférieurs (par exemple, une VM dans ce projet).
+
+
+== 2. Concepts de base d’IAM
+
+=== A. Rôles IAM
+
+Les rôles IAM définissent les permissions accordées aux principaux.
+
+=== Rôles prédéfinis :
+
+Fournis par GCP et adaptés à des services spécifiques.
+
+=== Exemple :
+
+=== roles/storage.objectViewer : 
+
+Accès en lecture aux objets de Cloud Storage.
+
+=== roles/compute.viewer : 
+
+Accès en lecture seule aux ressources Compute Engine.
+
+=== Rôles basiques (Legacy) :
+
+* Lecteur (Viewer) : 
+
+Accès en lecture seule à toutes les ressources.
+
+
+=== ...
+
+* Éditeur (Editor) : 
+
+Lecture, écriture et modification des ressources.
+
+
+=== ...
+
+* Propriétaire (Owner) : 
+
+Éditeur + gestion des permissions IAM.
+
+
+=== Rôles personnalisés :
+
+* Créés par les administrateurs pour des besoins spécifiques.
+* Permettent un contrôle granulaire des permissions.
+
+== B. Comptes de service
+
+Les comptes de service permettent aux applications de s’authentifier et d’interagir avec d'autres services GCP.
+
+=== ...
+
+Chaque compte de service peut se voir attribuer des rôles IAM pour accéder aux ressources nécessaires.
+
+== 3. Gestion des accès via la console GCP
+
+=== A. Ajouter un membre et lui attribuer un rôle
+
+* Accédez à la console GCP.
+* Allez dans IAM & Administration > IAM.
+
+=== ...
+
+* Cliquez sur Ajouter.
+
+=== ...
+
+* Saisissez l’adresse e-mail du principal (utilisateur, groupe ou compte de service).
+
+=== ...
+
+* Sélectionnez un ou plusieurs rôles prédéfinis ou personnalisés.
+
+=== ...
+
+* Cliquez sur Enregistrer.
+
+=== B. Vérifier et modifier les permissions
+
+* Consultez les rôles assignés aux membres dans IAM > Principaux.
+
+=== ...
+
+* Modifiez les permissions en cliquant sur Modifier à côté du rôle assigné.
+
+== 4. Gestion des accès via la CLI (gcloud)
+
+=== A. Ajouter un membre à un projet
+
+[source, bash]
+----
+gcloud projects add-iam-policy-binding <ID-du-projet> \
+    --member="user:<utilisateur@gmail.com>" \
+    --role="roles/editor"
+----
+
+
+== B. Lister les rôles IAM d’un projet
+
+[source, bash]
+----
+gcloud projects get-iam-policy <ID-du-projet>
+----
+
+== C. Supprimer un rôle attribué
+
+[source, bash]
+----
+gcloud projects remove-iam-policy-binding <ID-du-projet> \
+    --member="user:<utilisateur@gmail.com>" \
+    --role="roles/editor"
+----
+
+
+== 5. Bonnes pratiques en gestion des accès
+
+
+=== Principe du moindre privilège :
+
+Toujours la même antienne ! Accordez uniquement les permissions nécessaires à un utilisateur ou à une application.
+
+=== ...
+
+Par exemple, un utilisateur ne doit pas être Propriétaire si un rôle de Lecteur suffit.
+
+=== Utilisation des rôles prédéfinis et personnalisés :
+
+* Préférez les rôles prédéfinis pour réduire le risque d’erreurs.
+
+=== ...
+
+* Créez des rôles personnalisés pour des scénarios spécifiques.
+
+
+=== Comptes de service dédiés :
+
+* Ne partagez pas de comptes utilisateur pour les applications.
+
+=== ...
+
+* Utilisez des comptes de service distincts avec des permissions adaptées.
+
+=== Surveiller les permissions :
+
+* Effectuez des audits réguliers pour vérifier que les rôles assignés sont toujours pertinents.
+
+=== ...
+
+* Utilisez Cloud Logging pour surveiller les accès.
+
+=== Évitez les rôles basiques :
+
+Les rôles basiques (Owner, Editor, Viewer) peuvent accorder trop de permissions.
+
+=== Groupes pour les autorisations communes :
+
+* Ajoutez des utilisateurs à des groupes Google, puis attribuez les rôles aux groupes.
+
+
+=== Utilisez des politiques d'organisation :
+
+* Limitez les actions possibles au niveau de l’organisation ou des dossiers.
+
+== 6. Cas pratiques courants
+
+=== A. Accorder un accès en lecture à un bucket Cloud Storage
+
+Ajoutez un utilisateur en tant que Lecteur :
+
+== Console :
+
+* Accédez à Cloud Storage > Buckets > Permissions.
+
+
+Ajoutez un utilisateur avec le rôle Storage Object Viewer.
+
+=== CLI :
+
+[source, bash]
+----
+gcloud storage buckets add-iam-policy-binding <nom-bucket> \
+    --member="user:utilisateur@gmail.com" \
+    --role="roles/storage.objectViewer"
+----
+
+
+== B. Restreindre l'accès à une VM Compute Engine
+
+Assignez un rôle Compute Viewer à un utilisateur.
+
+=== ...
+
+Vérifiez que les règles IAM au niveau du projet n'accordent pas plus de permissions.
+
+== 7. Surveillance et audit des accès
+
+=== A. Cloud Logging
+
+* Suivez les événements d’accès aux ressources.
+
+* Exemple : Journaux d’accès IAM.
+
+=== B. Cloud Monitoring
+
+Configurez des alertes pour détecter des activités anormales.
+
+=== C. IAM Recommender
+
+Propose des recommandations pour réduire ou optimiser les permissions.
+
+
+
+
+
+
+

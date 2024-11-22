@@ -1,0 +1,217 @@
+= L'histoire de Google Cloud Platform (GCP)
+:revealjs_theme: beige
+
+== 2008 : Début du Cloud chez Google
+
+Google introduit App Engine, son premier service Cloud, permettant aux développeurs de créer et d'héberger des applications web. 
+
+=== ...
+
+C'était une tentative de partager avec le public les outils internes que Google utilisait pour ses propres services, comme la recherche, YouTube et Gmail.
+
+== 2010 : Lancement officiel de GCP
+
+Google Cloud Storage, un service de stockage d’objets, est introduit. Ce service marque le début de l'expansion de Google dans l'espace IaaS.
+
+== 2012 : Extension avec BigQuery
+
+BigQuery, une plateforme d'analyse de données à grande échelle, est lancée, répondant à des besoins complexes d'analyse en temps réel.
+
+== 2014 : Compute Engine
+
+Google lance Compute Engine, son service de machines virtuelles (VM), rivalisant directement avec AWS EC2 et Azure Virtual Machines.
+
+== 2015 : Kubernetes et l'essor des conteneurs
+
+Google lance Kubernetes en open-source, basé sur son orchestrateur interne Borg. 
+
+=== ...
+
+Kubernetes devient rapidement le standard mondial pour l'orchestration des conteneurs.
+
+== 2016 : Positionnement stratégique
+
+Diane Greene, co-fondatrice de VMware, rejoint Google pour diriger la division Cloud.
+
+=== ...
+
+Google Cloud est officiellement rebrandé en Google Cloud Platform (GCP).
+
+== 2020 et au-delà : IA et Big Data
+
+GCP devient un leader dans l’IA avec des services comme AutoML et Vertex AI.
+
+=== ...
+
+Google Cloud renforce son offre hybride et multi-cloud avec Anthos.
+
+== Principaux services de GCP
+
+== 1. Compute (Informatique)
+
+Ces services permettent de créer, déployer et gérer des charges de travail en Cloud.
+
+=== Compute Engine : 
+
+Machines virtuelles personnalisables.
+
+=== Google Kubernetes Engine (GKE) : 
+
+Service managé pour orchestrer les conteneurs Kubernetes.
+
+=== Cloud Functions : 
+
+Exécution serverless de fonctions en réponse à des événements.
+
+=== Cloud Run : 
+
+Plateforme pour exécuter des conteneurs dans un environnement serverless.
+
+== 2. Storage (Stockage)
+
+Stockez et accédez à vos données selon vos besoins.
+
+=== Cloud Storage : 
+
+Stockage d’objets (Standard, Nearline, Coldline, Archive).
+
+=== Persistent Disk : 
+
+Disques attachés aux machines virtuelles.
+
+=== Filestore : 
+
+Stockage de fichiers partagé basé sur NFS.
+
+=== Cloud SQL : 
+
+Bases de données relationnelles managées (MySQL, PostgreSQL).
+
+=== Cloud Spanner : 
+
+Base de données relationnelle mondiale et distribuée.
+
+=== Bigtable : 
+
+Base de données NoSQL pour les données à très grande échelle.
+
+== 3. Networking (Réseautique)
+
+GCP offre des services réseau avancés et performants.
+
+=== Virtual Private Cloud (VPC) : 
+
+Réseaux privés virtuels pour vos ressources.
+
+=== Cloud Load Balancing : 
+
+Équilibrage de charge global.
+
+=== Cloud CDN : 
+
+Réseau de diffusion de contenu pour réduire la latence.
+
+=== Cloud Interconnect : 
+
+Connectivité entre GCP et vos infrastructures locales.
+
+== 4. Big Data et Analyse
+
+Des outils pour traiter et analyser de grandes quantités de données.
+
+=== BigQuery : 
+
+Analyse de données à l'échelle pétaoctet avec SQL.
+=== Dataflow : 
+
+Traitement de données par flux ou par lots.
+
+=== Dataproc : 
+
+Service managé pour Hadoop et Spark.
+
+=== Pub/Sub : 
+
+Messagerie en temps réel pour connecter des systèmes.
+
+== 5. Intelligence Artificielle et Machine Learning
+
+Des services d’IA et de ML avancés.
+
+=== Vertex AI : 
+
+Plateforme complète pour le développement de modèles ML.
+
+=== AutoML : 
+
+Créez des modèles ML sans expertise technique.
+
+=== Cloud Vision API : 
+
+Analyse d’images (reconnaissance d’objets, OCR).
+
+=== Cloud Natural Language API : 
+
+Analyse de texte (sentiment, entités).
+
+=== Speech-to-Text / Text-to-Speech : 
+
+Convertir la voix en texte et vice-versa.
+
+== 6. Sécurité
+
+Sécurisez vos ressources Cloud et protégez vos données.
+
+=== IAM (Identity and Access Management) : 
+
+Gestion des rôles et permissions.
+
+=== Cloud Armor : 
+
+Protection contre les attaques DDoS.
+
+=== Cloud Identity : 
+
+Gestion des identités des utilisateurs.
+
+=== Key Management Service (KMS) : 
+
+Gestion des clés de chiffrement.
+
+== 7. Développement et DevOps
+
+Des outils pour le développement et l'intégration continue.
+
+=== Cloud Build : 
+
+CI/CD pour construire, tester et déployer des applications.
+
+=== Artifact Registry : 
+
+Stockage et gestion des conteneurs et artefacts.
+
+=== Cloud Source Repositories : 
+
+Dépôts Git privés pour le développement collaboratif.
+
+== 8. Outils hybrides et multi-cloud
+
+Permettez une interopérabilité entre vos infrastructures locales et le Cloud.
+
+=== Anthos : 
+
+Plateforme pour gérer les charges de travail sur GCP, AWS, Azure et sur site.
+
+=== Migrate for Compute Engine : 
+
+Migration des VMs locales vers GCP.
+
+=== GCP Marketplace : 
+
+Applications préconfigurées pour un déploiement rapide.
+
+
+
+
+
+

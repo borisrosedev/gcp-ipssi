@@ -1,0 +1,162 @@
+= Gestion des coûts sur Google Cloud Platform (GCP)
+:revealjs_theme: beige
+
+== Introduction
+
+La gestion efficace des coûts sur GCP repose sur la surveillance des dépenses, l’établissement de budgets, et la configuration d’alarmes pour éviter les dépassements. 
+
+=== ...
+
+Google Cloud propose des outils comme Cloud Billing pour suivre, analyser et optimiser vos coûts.
+
+
+== 1. Mise en place d’alarmes et budgets
+
+=== A. Configurer un budget
+
+Un budget vous permet de définir une limite de dépenses pour un projet ou un ensemble de projets, et de recevoir des alertes lorsque les dépenses atteignent certains seuils.
+
+=== Accéder à Cloud Billing :
+
+* Connectez-vous à la Google Cloud Console.
+* Allez dans Menu > Facturation.
+
+== Créer un budget :
+
+Sélectionnez le compte de facturation que vous souhaitez gérer.
+Cliquez sur Budgets et alertes > Créer un budget.
+Donnez un nom à votre budget (ex. : Budget-Projet-Dev).
+
+=== Sélectionnez l’étendue :
+
+* Projet spécifique : Pour surveiller un seul projet.
+* Tous les projets : Si le compte de facturation couvre plusieurs projets.
+* Définissez le montant du budget (ex. : 500 USD).
+
+=== Configurer les alertes :
+
+Définissez des seuils pour les alertes (par exemple : 50%, 90%, 100% du budget).
+
+=== ...
+
+Ajoutez des destinataires pour recevoir des notifications (via e-mail ou Pub/Sub).
+
+=== Sauvegarder le budget :
+
+Une fois configuré, cliquez sur Terminer. Vous recevrez des alertes lorsque les seuils sont atteints.
+
+== B. Configurer des alertes de dépenses sans budget
+
+Si vous ne souhaitez pas définir de budget mais simplement surveiller les dépenses :
+
+* Accédez à Menu > Facturation > Rapports.
+Configurez un seuil personnalisé et activez les notifications par e-mail.
+
+== 2. Utiliser l’outil Cloud Billing pour surveiller les dépenses
+
+
+=== A. Accéder aux rapports de facturation
+
+* Accédez à Menu > Facturation > Rapports.
+
+=== Visualisez vos dépenses :
+
+* Par service (Compute Engine, Cloud Storage, etc.).
+* Par projet.
+* Par région.
+
+=== Ajustez la période :
+
+Sélectionnez une période spécifique (par jour, semaine, mois).
+
+
+== B. Analyser les coûts par service
+
+
+Identifiez les services les plus coûteux grâce aux graphiques interactifs.
+
+=== ...
+
+Affichez les coûts détaillés pour chaque ressource (ex. : type de VM, taille du stockage).
+
+
+== C. Exporter les données de facturation
+
+
+=== Pour une analyse avancée des coûts :
+
+* Configurez l’exportation des données de facturation vers BigQuery :
+
+=== ...
+
+* Accédez à Facturation > Paramètres > Exportation des données.
+
+=== ...
+
+* Configurez l’exportation vers une table BigQuery.
+
+=== ...
+
+* Utilisez BigQuery pour exécuter des requêtes personnalisées sur les coûts.
+
+== 3. Optimisation des coûts
+
+== A. Suivi des recommandations avec Recommender
+
+
+Accédez à Recommender via Console > Recommandations.
+
+=== Recommandations proposées :
+* Supprimer les VM inutilisées.
+* Optimiser les tailles de disques.
+* Réduire les quotas non utilisés.
+
+
+== B. Réductions automatiques
+
+=== Réduction pour usage soutenu :
+
+* Appliquée automatiquement aux ressources utilisées de manière prolongée (ex. : VM).
+
+=== Réduction pour engagement :
+
+* Réductions pour engagement d’un an ou trois ans.
+
+== C. Planification et arrêt des ressources
+
+
+Configurez des scripts ou utilisez des outils comme Cloud Scheduler pour arrêter les VM ou autres ressources pendant les heures creuses.
+
+== 4. Bonnes pratiques pour gérer les coûts
+
+=== Surveillez les coûts régulièrement :
+
+* Utilisez Cloud Billing pour obtenir une vue claire des dépenses en temps réel.
+
+=== Automatisez les actions liées aux budgets :
+
+* Configurez des alertes pour éviter les dépassements.
+
+
+=== Utilisez des ressources optimisées :
+
+* Choisissez des configurations adaptées aux charges de travail.
+
+* Utilisez des VM préemptibles pour des tâches non critiques.
+
+=== Définissez des budgets pour les équipes :
+
+Attribuez des budgets spécifiques à chaque équipe ou projet.
+
+=== Archivez ou supprimez les ressources inutilisées :
+
+Supprimez les disques persistants et snapshots inutilisés.
+
+=== Testez avec le crédit gratuit GCP :
+
+Google offre un crédit initial gratuit pour tester ses services.
+
+
+
+
+
